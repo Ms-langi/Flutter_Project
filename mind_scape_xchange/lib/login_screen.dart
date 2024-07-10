@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'database_helper.dart';
 import 'home_page.dart'; // Import your HomePage screen
+import 'dart:developer'; // Import for logging
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -29,7 +30,6 @@ class LoginScreenState extends State<LoginScreen> {
     bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
     if (isLoggedIn) {
       if (mounted) {
-        // Check if widget is mounted
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => MyHomePage()),
@@ -53,13 +53,27 @@ class LoginScreenState extends State<LoginScreen> {
         'email': _emailController.text,
         'password': _passwordController.text,
       };
-      await _databaseHelper.insertUser(user); // Use _databaseHelper instance
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('User registered successfully!')));
-        setState(() {
-          _isLogin = true;
-        });
+      try {
+        int id = await _databaseHelper
+            .insertUser(user); // Use _databaseHelper instance
+        if (id > 0) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('User registered successfully!')));
+            setState(() {
+              _isLogin = true;
+            });
+            log('User registered with id: $id');
+          }
+        } else {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Failed to register user!')));
+            log('Failed to insert user');
+          }
+        }
+      } catch (e) {
+        log('Error inserting user: $e');
       }
     }
   }

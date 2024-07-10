@@ -4,6 +4,8 @@ import 'activity_atlas.dart';
 import 'community_spotlight.dart';
 import 'educareer.dart';
 import 'marketing_mavericks.dart';
+import 'lessons.dart';
+import 'today.dart';
 import 'profile.dart';
 import 'blogposts_container.dart';
 import 'login_screen.dart';
@@ -154,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MarketingMavericksScreen(),
+                              builder: (context) => TodayScreen(),
                             ),
                           );
                         },
@@ -172,7 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MarketingMavericksScreen(),
+                              builder: (context) => LessonsScreen(),
                             ),
                           );
                         },
